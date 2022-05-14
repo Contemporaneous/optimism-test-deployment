@@ -12,7 +12,7 @@ const main = async () => {
     console.log("Other balance" + randomBalance);
 
     const pifFactory = await hre.ethers.getContractFactory('PayItForward');
-    const pif = await pifFactory.deploy({value: hre.ethers.utils.parseEther('0.5')});
+    const pif = await pifFactory.deploy({value: hre.ethers.utils.parseEther('2000')});
     await pif.deployed();
 
     let contractBalance = await hre.ethers.provider.getBalance(pif.address);
@@ -20,7 +20,7 @@ const main = async () => {
 
     console.log("Contract deployed to:", pif.address);
   
-    let txn = await pif.connect(randomPerson).payItForward({value: hre.ethers.utils.parseEther('0.1')});
+    let txn = await pif.connect(randomPerson).payItForward({value: hre.ethers.utils.parseEther('1000')});
     await txn.wait();
 
     ownerBalance = await hre.ethers.provider.getBalance(owner.address);
@@ -31,7 +31,7 @@ const main = async () => {
     console.log("Other balance" + randomBalance);
     console.log('Contract balance: ' + contractBalance);
 
-    txn = await pif.payItForward({value: hre.ethers.utils.parseEther('0.6')});
+    txn = await pif.payItForward({value: hre.ethers.utils.parseEther('4000')});
     await txn.wait();
 
     ownerBalance = await hre.ethers.provider.getBalance(owner.address);
