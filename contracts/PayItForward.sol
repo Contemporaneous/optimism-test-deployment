@@ -15,14 +15,12 @@ contract PayItForward{
     }
 
     function payItForward() public payable {
-        require(msg.value > 1*10**16);
+        require(msg.value > 1*10**16, 'Not enough Funds sent');
         withdraw();
-
     }
 
     function withdraw() private {
-        uint amount = address(this).balance;
-        
+        uint amount = address(this).balance - msg.value;
         (bool withdrawSuccess, ) = msg.sender.call{value: amount}("");
         require(withdrawSuccess, "Failed to deposit");
     }
