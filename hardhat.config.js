@@ -5,7 +5,7 @@ require("dotenv").config();
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.8.4",
+  solidity: "0.8.10",
   networks: {
     "optimistic-kovan": {
       url: process.env.STAGING_ALCHEMY_KEY,
