@@ -15,7 +15,7 @@ contract PayItForward{
     }
 
     function payItForward() public payable {
-        require(msg.value > 1*10**16, 'Not enough Funds sent');
+        require(msg.value > 1*10**14, 'Not enough Funds sent');
         withdraw();
     }
 
