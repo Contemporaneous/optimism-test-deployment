@@ -4,7 +4,7 @@ const ethers = require("ethers");
 const main = async () => {
     //Get the contract and deploy it
     const pifFactory = await hre.ethers.getContractFactory('PayItForward');
-    const pif = await pifFactory.deploy({value: hre.ethers.utils.parseEther('0.001')});
+    const pif = await pifFactory.deploy({value: hre.ethers.utils.parseEther('0.0001')});
     await pif.deployed();
 
     console.log("Contract deployed to:", pif.address);
