@@ -13,6 +13,9 @@ import "hardhat/console.sol";
 contract PayItForward{
 
     address private _owner;
+    address private lastDoner;
+
+    event paidForward(address _from, address _to, uint _amount);
 
     /**
      * @notice Deploy Pay It Forward smart contract.
@@ -20,6 +23,7 @@ contract PayItForward{
      */
     constructor() payable  {
         _owner = msg.sender;
+        lastDoner = msg.sender;
 
         console.log('Ready to Rumble');
     }
@@ -31,6 +35,7 @@ contract PayItForward{
     function payItForward() public payable {
         require(msg.value > 1*10**14, 'Not enough Funds sent');
         withdraw();
+        lastDoner = msg.sender;
     }
 
     /**
@@ -40,5 +45,7 @@ contract PayItForward{
         uint amount = address(this).balance - msg.value;
         (bool withdrawSuccess, ) = msg.sender.call{value: amount}("");
         require(withdrawSuccess, "Failed to deposit");
+        
+        emit paidForward(lastDoner, msg.sender, amount);
     }
 }
