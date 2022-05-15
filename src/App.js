@@ -17,7 +17,7 @@ const App = () => {
 
 	//State Varriables
 	const [currentAccount, setCurrentAccount] = useState('');
-	const [domain, setDomain] = useState('');
+	const [toSend, setToSend] = useState('');
 	const [favFood, setFavFood] = useState('');
 	const [favPark, setFavPark] = useState('');
 	const [network, setNetwork] = useState('');
@@ -123,6 +123,28 @@ const App = () => {
 		} 
 	}
 
+    const payItForward = async() => {
+        setLoading(true);
+        try {
+            const { ethereum } = window;
+            if (ethereum) {
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const signer = provider.getSigner();
+                const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI.abi, signer);
+
+                let tx = await contract.payItForward({value : ethers.utils.parseEther(toSend), gasLimit: 50000});
+				await tx.wait();
+                alert("Check your Wallet to see what was Paid forward to you")
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+            setToSend('');
+        }
+
+    };
+
 
 	// Create a function to render if wallet is not connected yet
 	const renderNotConnectedContainer = () => (
@@ -134,18 +156,42 @@ const App = () => {
 		</div>
   	);
 
+      const renderInputForm = () =>{
+
+		if (network !== 'Optimistic Kovan') {
+			return (
+				<div className="connect-wallet-container">
+					<p>Please connect to the Optimism Testnet</p>
+					<button className='cta-button network-button' onClick={switchNetwork}>Click here to switch</button>
+				</div>
+			);
+		}
+
+        return (
+            <div className="form-container">
+                <div className="first-row">
+					<input
+						type="text"
+						value={toSend}
+						placeholder='Enter Ether amount > 0.0001'
+						onChange={e => setToSend(e.target.value)}
+					/>
+				</div>
+
+				<button className='cta-button mint-button' disabled={loading} onClick={payItForward}>
+						Pay It Forward
+				</button>   
+				
+            </div>
+
+        );
+    };
+
 
 	// useEffects 
 	useEffect(() => {
 		checkIfWalletIsConnected();
 	}, [])
-
-	useEffect(() => {
-		if (network === 'Optimistic Kovan') {
-			//fetchMints();
-		}
-	}, [currentAccount, network]);
-
 
 
  	return (
@@ -168,6 +214,7 @@ const App = () => {
 
 				{/* Add your render method here */}
 				{!currentAccount && renderNotConnectedContainer()}
+                {currentAccount && renderInputForm()}
 			
 				<div className="footer-container">
 					<img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
