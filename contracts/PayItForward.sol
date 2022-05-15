@@ -13,7 +13,7 @@ import "hardhat/console.sol";
 contract PayItForward{
 
     address private _owner;
-    address private lastDoner;
+    address public lastDoner;
 
     event paidForward(address _from, address _to, uint _amount);
 
@@ -24,8 +24,6 @@ contract PayItForward{
     constructor() payable  {
         _owner = msg.sender;
         lastDoner = msg.sender;
-
-        console.log('Ready to Rumble');
     }
 
     /**
