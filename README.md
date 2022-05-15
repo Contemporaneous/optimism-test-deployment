@@ -13,5 +13,7 @@ and receive the balance of the contract. The idea being that the user would rece
 
 [Optimistic Kovan contract](https://kovan-optimistic.etherscan.io/address/0xC73FB11d346dc39fCAc7afc59aE13EF5eb077528) : `0xC73FB11d346dc39fCAc7afc59aE13EF5eb077528`
 
+## Web Deployment
 
+This is currently deployed to vercel [here](https://pay-it-forward-kovan.vercel.app/_)
 
